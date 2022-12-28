@@ -2,6 +2,8 @@
 
 A little desktop clock with round display for Raspberry Pi Pico, or could be coded to do and be anything you want.
 
+![IMG_20221228_194505](https://user-images.githubusercontent.com/46349796/209873821-4de94d60-9070-4d57-9b7d-3ed96852a176.jpg)
+
 ## Round LCD 1.3" SPI
 https://thepihut.com/products/1-3-spi-colour-round-lcd-240x240-breakout
 
@@ -27,4 +29,7 @@ https://github.com/pimoroni/pimoroni-pico/tree/main/micropython/modules/picograp
 ## Printing
 Printed on an Ender 3 Neo v2 with standard settings and PLA filament.
 
-![IMG_20221228_194505](https://user-images.githubusercontent.com/46349796/209873821-4de94d60-9070-4d57-9b7d-3ed96852a176.jpg)
+![IMG_20221228_153704](https://user-images.githubusercontent.com/46349796/209874000-67072265-0f59-4215-a9a0-5bcb3ac61a7f.jpg)
+
+
+Freeware - use as you wish
