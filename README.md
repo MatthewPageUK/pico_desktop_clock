@@ -2,6 +2,8 @@
 
 A little desktop clock with round display for Raspberry Pi Pico, or could be coded to do and be anything you want.
 
+https://user-images.githubusercontent.com/46349796/210157170-16673b5b-2ba9-4aa8-8f3d-cb7db660b9cc.mp4
+
 ![IMG_20221228_194505](https://user-images.githubusercontent.com/46349796/209873821-4de94d60-9070-4d57-9b7d-3ed96852a176.jpg)
 
 ## Round LCD 1.3" SPI
@@ -33,7 +35,3 @@ Printed on an Ender 3 Neo v2 with standard settings and PLA filament.
 
 
 Freeware - use as you wish
-
-https://user-images.githubusercontent.com/46349796/210157170-16673b5b-2ba9-4aa8-8f3d-cb7db660b9cc.mp4
-
-
