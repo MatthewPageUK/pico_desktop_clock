@@ -33,3 +33,7 @@ Printed on an Ender 3 Neo v2 with standard settings and PLA filament.
 
 
 Freeware - use as you wish
+
+https://user-images.githubusercontent.com/46349796/210157170-16673b5b-2ba9-4aa8-8f3d-cb7db660b9cc.mp4
+
+
