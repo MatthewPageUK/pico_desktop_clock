@@ -3,6 +3,7 @@
 A little desktop clock with round display for Raspberry Pi Pico, or could be coded to do and be anything you want.
 
 ### Latest
+* 20 Jan 2023 - Moved the star movement to core1, added simple alarms, a night mode ready for a light sensor, ASCII art and got the AI to write some comments for me.
 * 30 Dec 2022 - Fixed some time and code issues
 
 https://user-images.githubusercontent.com/46349796/210157170-16673b5b-2ba9-4aa8-8f3d-cb7db660b9cc.mp4
