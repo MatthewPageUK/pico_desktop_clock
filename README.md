@@ -2,7 +2,12 @@
 
 A little desktop clock with round display for Raspberry Pi Pico, or could be coded to do and be anything you want.
 
+* Acquires current time from NTP
+* Customisable alarms with snooze feature
+* Buzzer to play musical alarms
+
 ### Latest
+* 21 Jan 2023 - Version 2 - new design, added buttons, buzzer and alarms
 * 20 Jan 2023 - Moved the star movement to core1, added simple alarms, a night mode ready for a light sensor, ASCII art and got the AI to write some comments for me.
 * 30 Dec 2022 - Fixed some time and code issues
 
@@ -16,7 +21,7 @@ https://thepihut.com/products/1-3-spi-colour-round-lcd-240x240-breakout
 ## Pico W
 https://thepihut.com/products/raspberry-pi-pico-w
 
-## Wiring
+## LCD Wiring
 * 3-5V to any 5V or 3V pin
 * CS to GP17
 * SCK to GP18
@@ -24,6 +29,15 @@ https://thepihut.com/products/raspberry-pi-pico-w
 * DC to GP16
 * BL to GP20
 * GND to any ground pin
+
+### Button Wiring
+* Button 1 to GP0
+* Button 2 to GP1
+* GND to any ground pin (3)
+
+### Buzzer Wiring
+* Positive to GP15
+* Negative to any ground pin (18)
 
 ![IMG_20221228_153725](https://user-images.githubusercontent.com/46349796/209873780-b7ec71c3-e876-430d-8d2b-9f6298bb02f9.jpg)
 
