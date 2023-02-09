@@ -41,8 +41,8 @@
 
  By           - Matthew Page
  Credit       - Everyone who came before and wrote a how to guide
- Version      - 0.2
- Release date - 22nd January 2023
+ Version      - 0.3
+ Release date - 9th Febuary 2023
 """
 import math
 import random
@@ -52,6 +52,7 @@ import ntptime
 import _thread
 from machine import Pin, PWM
 from picographics import PicoGraphics, DISPLAY_ROUND_LCD_240X240, PEN_P8
+from buzzer import Buzzer
 
 display = PicoGraphics(display=DISPLAY_ROUND_LCD_240X240, pen_type=PEN_P8, rotate=90)
 
@@ -79,26 +80,8 @@ STARS_TOTAL = 200                   # Number of stars to show
 STARS_SPEED_MAX = 25                # Max speed of stars
 DEFAULT_NOTIFICATION_DELAY = 2      # Time notifications are displayed for
 BUZZER_PIN = 15                     # Buzzer GPIO pin
-BUZZER_TONES = {"B0": 31, "C1": 33, "CS1": 35, "D1": 37, "DS1": 39, "E1": 41, "F1": 44, "FS1": 46, "G1": 49, "GS1": 52, "A1": 55, "AS1": 58, "B1": 62, "C2": 65, "CS2": 69, "D2": 73, "DS2": 78, "E2": 82, "F2": 87, "FS2": 93, "G2": 98, "GS2": 104, "A2": 110, "AS2": 117, "B2": 123, "C3": 131, "CS3": 139, "D3": 147, "DS3": 156, "E3": 165, "F3": 175, "FS3": 185, "G3": 196, "GS3": 208, "A3": 220, "AS3": 233, "B3": 247, "C4": 262, "CS4": 277, "D4": 294, "DS4": 311, "E4": 330, "F4": 349, "FS4": 370, "G4": 392, "GS4": 415, "A4": 440, "AS4": 466, "B4": 494, "C5": 523, "CS5": 554,"D5": 587, "DS5": 622, "E5": 659, "F5": 698, "FS5": 740, "G5": 784, "GS5": 831, "A5": 880, "AS5": 932, "B5": 988, "C6": 1047, "CS6": 1109, "D6": 1175, "DS6": 1245, "E6": 1319, "F6": 1397, "FS6": 1480, "G6": 1568, "GS6": 1661, "A6": 1760, "AS6": 1865, "B6": 1976, "C7": 2093, "CS7": 2217, "D7": 2349, "DS7": 2489, "E7": 2637, "F7": 2794, "FS7": 2960, "G7": 3136, "GS7": 3322, "A7": 3520, "AS7": 3729, "B7": 3951, "C8": 4186, "CS8": 4435, "D8": 4699, "DS8": 4978}
-ALARM_SONG = ("C4", "C4", "D4", "C4", "F4", "E4", "C4", "C4", "D4", "C4", "G4", "F4", "C4", "C4", "C5", "A4", "F4", "E4", "D4", "B4", "B4", "A4", "F4", "G4", "F4", "P", "P")
 BUTTON1_PIN = 0                     # Button 1 GPIO pin
 BUTTON2_PIN = 1                     # Button 2 GPIO pin
-
-def playsong(song):
-    global alarmActive
-    """Plays a song using the buzzer
-    https://www.tomshardware.com/how-to/buzzer-music-raspberry-pi-pico
-    song - A tuple of notes to play"""
-    for i in range(len(song)):
-        if not alarmActive:
-            break
-        if (song[i] == "P"):
-            buzzer.duty_u16(0)
-        else:
-            buzzer.duty_u16(1000)
-            buzzer.freq(BUZZER_TONES[song[i]])
-        utime.sleep(0.3)
-    buzzer.duty_u16(0)
 
 def notification(text, colour, delay = DEFAULT_NOTIFICATION_DELAY, background = BG):
     """Show a notification on the display
@@ -124,7 +107,7 @@ def showAlarm(text):
             if alarmActive:
                 notification(text, PURPLE, 0.5)
             if alarmActive:
-                playsong(ALARM_SONG)
+                buzzer.playSong()
             if alarmActive:
                 notification(text, BG, 0.5, PURPLE)
 
@@ -264,7 +247,7 @@ def moveStars():
 
 def button1Handler(pin):
     """Button 1 IRQ handler - cancels the alarm or toggles Night Mode"""
-    global alarmActive, NIGHT_MODE, button1Debounce, seconds
+    global alarmActive, NIGHT_MODE, button1Debounce, seconds, buzzer
 
     # Check the time the button was last pressed, debounce
     if button1Debounce == 0 or seconds - button1Debounce > 1:
@@ -274,6 +257,7 @@ def button1Handler(pin):
             alarmActive = False
             print("Alarm cancelled")
         else:
+            buzzer.yes()
             NIGHT_MODE = not NIGHT_MODE
 
 def button2Handler(pin):
@@ -285,6 +269,7 @@ def button2Handler(pin):
         button2Debounce = seconds
 
         alarmActive = False
+        buzzer.no()
         print("Snoozed")
 
 # Debounce the IRQ buttons, this stores the last time they were pressed
@@ -305,9 +290,7 @@ button1.irq(trigger=Pin.IRQ_FALLING, handler=button1Handler)
 button2.irq(trigger=Pin.IRQ_FALLING, handler=button2Handler)
 
 # Set up the buzzer
-buzzer = PWM(Pin(BUZZER_PIN))
-buzzer.freq(500)
-buzzer.duty_u16(0)
+buzzer = Buzzer(BUZZER_PIN)
 
 # Default alarms (Hours, Minutes, Seconds, Message)
 alarms = ((8, 30, 0, "Time to get up!"), (12, 0, 0, "Lunch time!"), (17, 30, 0, "Time to go home!"), (21, 10, 0, "Time to go to bed!"))

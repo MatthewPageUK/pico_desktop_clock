@@ -7,6 +7,7 @@ A little desktop clock with round display for Raspberry Pi Pico, or could be cod
 * Buzzer to play musical alarms
 
 ### Latest
+* 9 Feb 2023 - Added boot script to record last known time, update the buzzer and musical tones
 * 21 Jan 2023 - Version 2 - new design, added buttons, buzzer and alarms
 * 20 Jan 2023 - Moved the star movement to core1, added simple alarms, a night mode ready for a light sensor, ASCII art and got the AI to write some comments for me.
 * 30 Dec 2022 - Fixed some time and code issues
