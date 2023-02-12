@@ -231,7 +231,7 @@ class Star:
 
 def moveStars():
     """Move the stars in a loop - runs as process in core 1 """
-    global restartCore1
+    global restartCore1, messages
     try:
         restartCore1 = False
         while True:
@@ -241,13 +241,13 @@ def moveStars():
     # Sometimes a thread is left running, so catch the error and restart
     # Only happens when you're stopping and starting the program
     except Exception as e:
-        print("Restaring core1: {e}".format(e=e))
+        messages.append("Restaring core1: {e}".format(e=e))
         restartCore1 = True
         _thread.exit()
 
 def button1Handler(pin):
     """Button 1 IRQ handler - cancels the alarm or toggles Night Mode"""
-    global alarmActive, NIGHT_MODE, button1Debounce, seconds, buzzer
+    global alarmActive, NIGHT_MODE, button1Debounce, seconds, buzzer, messages
 
     # Check the time the button was last pressed, debounce
     if button1Debounce == 0 or seconds - button1Debounce > 1:
@@ -255,14 +255,14 @@ def button1Handler(pin):
 
         if alarmActive:
             alarmActive = False
-            print("Alarm cancelled")
+            messages.append("Alarm cancelled")
         else:
             buzzer.yes()
             NIGHT_MODE = not NIGHT_MODE
 
 def button2Handler(pin):
     """Button 2 IRQ handler - snoozes the alarm"""
-    global alarmActive, button2Debounce, seconds
+    global alarmActive, button2Debounce, seconds, messages
 
     # Check the time the button was last pressed, debounce
     if button2Debounce == 0 or seconds - button2Debounce > 1:
@@ -270,7 +270,10 @@ def button2Handler(pin):
 
         alarmActive = False
         buzzer.no()
-        print("Snoozed")
+        messages.append("Snoozed")
+
+# Message queue buffer
+messages=[]
 
 # Debounce the IRQ buttons, this stores the last time they were pressed
 button1Debounce = 0
@@ -310,6 +313,10 @@ startTime = utime.time()
 # Main Loop
 while True:
 
+    # Log messages to console
+    while len(messages):
+        print(messages.pop(0))
+
     # Time in seconds
     seconds = utime.time()
 
@@ -326,7 +333,7 @@ while True:
             # Move the stars in core1 with a new thread
             core1 = _thread.start_new_thread(moveStars, ())
         except Exception as e:
-            print("core1 failed: {e}".format(e=e))
+            messages.append("core1 failed: {e}".format(e=e))
 
     # Show a test alarm 5 seconds after startup
     if seconds - startTime == 5:
